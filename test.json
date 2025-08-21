@@ -1,0 +1,41 @@
+{
+    "version": "1.0",
+    "name": "ShopDB",
+    "tables": [
+      {
+        "id": "tbl_users",
+        "name": "users",
+        "columns": [
+          { "id": "u_id", "name": "id", "type": "int", "nullable": false, "default": null },
+          { "id": "u_email", "name": "email", "type": "varchar(255)", "nullable": false, "default": null },
+          { "id": "u_name", "name": "name", "type": "varchar(255)", "nullable": false, "default": null }
+        ],
+        "primaryKey": ["u_id"],
+        "uniqueConstraints": [{ "id": "uq_users_email", "columns": ["u_email"] }],
+        "indexes": [],
+        "position": { "x": 120, "y": 120 }
+      },
+      {
+        "id": "tbl_orders",
+        "name": "orders",
+        "columns": [
+          { "id": "o_id", "name": "id", "type": "int", "nullable": false, "default": null },
+          { "id": "o_user_id", "name": "user_id", "type": "int", "nullable": false, "default": null },
+          { "id": "o_total", "name": "total", "type": "decimal(10,2)", "nullable": false, "default": "0.00" }
+        ],
+        "primaryKey": ["o_id"],
+        "uniqueConstraints": [],
+        "indexes": [],
+        "position": { "x": 480, "y": 260 }
+      }
+    ],
+    "foreignKeys": [
+      {
+        "id": "fk_orders_user",
+        "from": { "table": "tbl_orders", "columns": ["o_user_id"] },
+        "to":   { "table": "tbl_users",  "columns": ["u_id"] },
+        "onDelete": "CASCADE",
+        "onUpdate": "NO ACTION"
+      }
+    ]
+  }
