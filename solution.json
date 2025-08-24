@@ -3,102 +3,34 @@
   "name": "ShopDB",
   "tables": [
     {
-      "id": "tbl_users",
-      "name": "users",
+      "id": "tbl_users_web192z",
+      "name": "zhopa",
       "columns": [
         {
-          "id": "u_id",
+          "id": "col_id_5w0g8x7",
           "name": "id",
-          "type": "int",
-          "nullable": false,
-          "default": null
-        },
-        {
-          "id": "u_email",
-          "name": "email",
-          "type": "varchar(255)",
-          "nullable": false,
-          "default": null
-        },
-        {
-          "id": "u_name",
-          "name": "name",
           "type": "varchar(255)",
           "nullable": false,
           "default": null
         }
       ],
       "primaryKey": [
-        "u_id"
+        "col_id_5w0g8x7"
       ],
       "uniqueConstraints": [
         {
-          "id": "uq_users_email",
+          "id": "uq_wnoay5k",
           "columns": [
-            "u_email"
+            "col_id_5w0g8x7"
           ]
         }
       ],
       "indexes": [],
       "position": {
-        "x": 846,
-        "y": 344
-      }
-    },
-    {
-      "id": "tbl_orders",
-      "name": "orders****",
-      "columns": [
-        {
-          "id": "o_id",
-          "name": "id",
-          "type": "int",
-          "nullable": false,
-          "default": null
-        },
-        {
-          "id": "o_user_id",
-          "name": "user_id",
-          "type": "int",
-          "nullable": false,
-          "default": null
-        },
-        {
-          "id": "o_total",
-          "name": "total",
-          "type": "decimal(10,2)",
-          "nullable": false,
-          "default": "0.00"
-        }
-      ],
-      "primaryKey": [
-        "o_id"
-      ],
-      "uniqueConstraints": [],
-      "indexes": [],
-      "position": {
-        "x": 376,
-        "y": 229
+        "x": 366,
+        "y": 146
       }
     }
   ],
-  "foreignKeys": [
-    {
-      "id": "fk_orders_user",
-      "from": {
-        "table": "tbl_orders",
-        "columns": [
-          "o_user_id"
-        ]
-      },
-      "to": {
-        "table": "tbl_users",
-        "columns": [
-          "u_id"
-        ]
-      },
-      "onDelete": "CASCADE",
-      "onUpdate": "NO ACTION"
-    }
-  ]
+  "foreignKeys": []
 }
