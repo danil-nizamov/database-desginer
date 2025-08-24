@@ -344,7 +344,7 @@
     // --- boot
     (async function init() {
       try {
-        schema = loadSchemaFromLocalStorage() || await loadSchemaFromFile('../.codesignal/initial_state.json');
+        schema = loadSchemaFromLocalStorage() || await loadSchemaFromFile('initial_state.json');
         schema.foreignKeys = schema.foreignKeys || [];
         setStatus(`Loaded: ${schema.name}`);
         save();
