@@ -44,6 +44,9 @@
     const tblId = name => `tbl_${name}_${uid()}`;
     const colId = name => `col_${name}_${uid()}`;
     const fkId = () => `fk_${uid()}`;
+    function makeEmptySchema(name = 'New schema') {
+        return { name, tables: [], foreignKeys: [] };
+    }
 
     function setStatus(msg) { status.textContent = msg; }
 
@@ -344,7 +347,23 @@
     // --- boot
     (async function init() {
       try {
-        schema = loadSchemaFromLocalStorage() || await loadSchemaFromFile('initial_state.json');
+        schema = loadSchemaFromLocalStorage();
+
+        if (!schema) {
+            // If not in localStorage, try the file, but fall back to empty if missing.
+            try {
+                schema = await loadSchemaFromFile('initial_state.json');
+                if (!schema) throw new Error('initial_state.json returned empty');
+                setStatus(`Loaded: ${schema.name}`);
+            } catch (err) {
+                console.warn('initial_state.json not found or failed to load. Starting empty.', err);
+                schema = makeEmptySchema('Untitled schema');
+                setStatus('No initial_state.json found. Starting with an empty schema.');
+            }
+            } else {
+            setStatus(`Loaded: ${schema.name}`);
+        }
+
         schema.foreignKeys = schema.foreignKeys || [];
         setStatus(`Loaded: ${schema.name}`);
         save();
