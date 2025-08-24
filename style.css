@@ -35,3 +35,10 @@
     /* Visuals for the drag button */
   .drag-btn-bg { fill: #f2f3f5; stroke: #d0d0d7; }
   .drag-btn-dot { fill: #888; }
+
+    /* Pan/zoom UX */
+    #diagram { cursor: default; }
+    #diagram.panning { cursor: grabbing !important; }
+
+    /* make column text obviously interactive */
+    .col-text { pointer-events: auto; }
