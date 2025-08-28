@@ -1,6 +1,7 @@
 :root {
     --bg: #f7f7f9; --fg: #222; --muted: #666; --box: #fff;
     --stroke: #999; --key: #0b6; --fk: #06c; --danger: #c0392b;
+    --accent: #3b82f6;
   }
   *{box-sizing:border-box}
   html,body{height:100%;margin:0}
@@ -17,7 +18,10 @@
   .row{display:flex;align-items:center;gap:.5rem}
   .row-between{display:flex;align-items:center;justify-content:space-between}
   label{display:flex;flex-direction:column;gap:.25rem;margin:.4rem 0}
+  /* Keep checkbox + text on one line for labels that use .row */
+  label.row{flex-direction:row;align-items:center;gap:.5rem}
   input,select,button{padding:.5rem;border:1px solid #ddd;border-radius:6px;font:inherit}
+  input[type="checkbox"]{padding:0}
   button{cursor:pointer}
   button.danger{background:#ffe9e7;border-color:#ffd5d1;color:var(--danger)}
   hr{border:none;border-top:1px solid #eee;margin:10px 0}
@@ -31,14 +35,23 @@
   .edge{stroke:var(--fk);stroke-width:1.5;fill:none}
   .edge-marker{fill:var(--fk)}
 
-
-    /* Visuals for the drag button */
+  /* Visuals for the drag button */
   .drag-btn-bg { fill: #f2f3f5; stroke: #d0d0d7; }
   .drag-btn-dot { fill: #888; }
 
-    /* Pan/zoom UX */
-    #diagram { cursor: default; }
-    #diagram.panning { cursor: grabbing !important; }
+  /* Pan/zoom UX */
+  #diagram { cursor: default; }
+  #diagram.panning { cursor: grabbing !important; }
 
-    /* make column text obviously interactive */
-    .col-text { pointer-events: auto; }
+  /* make column text obviously interactive */
+  .col-text { pointer-events: auto; }
+
+  /* Highlight the column currently being edited */
+  @keyframes colPulse {
+    0%, 100% { fill: var(--fg); }
+    50% { fill: var(--accent); }
+  }
+  .col-editing {
+    animation: colPulse 1.2s ease-in-out infinite;
+    font-weight: 600;
+  }

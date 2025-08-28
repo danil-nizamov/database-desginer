@@ -42,7 +42,7 @@ function columnCenterY(table, colId) {
   return base + idx * DIAGRAM.ROW_H;
 }
 
-function renderTable(svg, table, schema, selectedTableId, onSelectTable, onSelectColumn) {
+function renderTable(svg, table, schema, selectedTableId, selectedColId, onSelectTable, onSelectColumn) {
   const vp = ensureViewport(svg);
   const g = createSvg('g', { class: `table${table.id === selectedTableId ? ' selected' : ''}`, 'data-id': table.id });
   const { x, y, width, height } = tableGeometry(table);
@@ -80,7 +80,9 @@ function renderTable(svg, table, schema, selectedTableId, onSelectTable, onSelec
       (fk.to.table === table.id && fk.to.columns.includes(col.id))
     );
     const prefix = `${isPK ? '🔑 ' : ''}${isFK ? '🔗 ' : ''}`;
-    const t = createSvg('text', { x: x + DIAGRAM.PADDING_X, y: cy, class: 'col-text', 'data-col-id': col.id, 'dominant-baseline': 'middle' });
+    const classes = ['col-text'];
+    if (col.id === selectedColId) classes.push('col-editing');
+    const t = createSvg('text', { x: x + DIAGRAM.PADDING_X, y: cy, class: classes.join(' '), 'data-col-id': col.id, 'dominant-baseline': 'middle' });
     t.textContent = `${prefix}${col.name}: ${col.type}${col.nullable ? '' : ' NOT NULL'}`;
     t.style.cursor = 'pointer';
     t.addEventListener('click', (e) => {
@@ -117,9 +119,9 @@ function renderEdge(svg, fk, schema) {
   vp.appendChild(createSvg('path', { d, class: 'edge', 'marker-end': 'url(#arrow)' }));
 }
 
-function renderSchema(svg, schema, selectedId, onSelectTable, onSelectColumn) {
+function renderSchema(svg, schema, selectedTableId, onSelectTable, onSelectColumn, selectedColId) {
   clearDiagram(svg); ensureArrowMarker(svg); applyView(svg);
-  schema.tables.forEach(t => renderTable(svg, t, schema, selectedId, onSelectTable, onSelectColumn));
+  schema.tables.forEach(t => renderTable(svg, t, schema, selectedTableId, selectedColId, onSelectTable, onSelectColumn));
   (schema.foreignKeys || []).forEach(fk => renderEdge(svg, fk, schema));
 }
 
@@ -176,7 +178,7 @@ function enablePanZoom(svg, onViewChanged) {
 }
 
 /* --- dragging: ONLY starts from the drag button (.drag-handle) --- */
-function enableDragging(svg, schema, onChange, getSelectedId, onSelectTable, onSelectColumn) {
+function enableDragging(svg, schema, onChange, getSelectedId, getSelectedColId, onSelectTable, onSelectColumn) {
   const drag = { active: false, id: null, offsetX: 0, offsetY: 0, pointerId: null };
 
   svg.addEventListener('pointerdown', (e) => {
@@ -199,7 +201,7 @@ function enableDragging(svg, schema, onChange, getSelectedId, onSelectTable, onS
     const { x: sx, y: sy } = clientToSvgPoint(svg, e.clientX, e.clientY);
     table.position = { x: Math.round(sx - drag.offsetX), y: Math.round(sy - drag.offsetY) };
     // IMPORTANT: keep real handlers during drag so selections stay interactive
-    renderSchema(svg, schema, getSelectedId && getSelectedId(), onSelectTable, onSelectColumn);
+    renderSchema(svg, schema, getSelectedId && getSelectedId(), onSelectTable, onSelectColumn, getSelectedColId && getSelectedColId());
   });
 
   function endDrag(e) {
@@ -208,7 +210,7 @@ function enableDragging(svg, schema, onChange, getSelectedId, onSelectTable, onS
     drag.pointerId = null;
     onChange && onChange(schema);
     // Re-render once more with the real handlers to avoid "locked" selection
-    renderSchema(svg, schema, getSelectedId && getSelectedId(), onSelectTable, onSelectColumn);
+    renderSchema(svg, schema, getSelectedId && getSelectedId(), onSelectTable, onSelectColumn, getSelectedColId && getSelectedColId());
   }
   svg.addEventListener('pointerup', endDrag); svg.addEventListener('pointercancel', endDrag);
 }
