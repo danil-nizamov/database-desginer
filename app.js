@@ -130,7 +130,7 @@
       btnDeleteCol.removeAttribute('hidden');
 
       // Update titles
-      selTitle.textContent = `Selected: ${t.name} • Editing field "${c.name}"`;
+      selTitle.textContent = `Selected: ${t.name}`;
       fieldFormTitle.textContent = `Editing “${c.name}” field`;
 
       Diagram.renderSchema(svg, schema, selectedTableId, selectTable, selectColumn, selectedColId);

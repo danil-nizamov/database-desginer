@@ -4,11 +4,18 @@
   "tables": [
     {
       "id": "tbl_users_web192z",
-      "name": "testing initial state",
+      "name": "Table for tests",
       "columns": [
         {
           "id": "col_id_5w0g8x7",
           "name": "id",
+          "type": "int",
+          "nullable": false,
+          "default": null
+        },
+        {
+          "id": "col_beepki_id_yw3ii99",
+          "name": "a_id",
           "type": "int",
           "nullable": false,
           "default": null
@@ -30,7 +37,45 @@
         "x": 376,
         "y": 145
       }
+    },
+    {
+      "id": "tbl_beepki_xcs3cmv",
+      "name": "A",
+      "columns": [
+        {
+          "id": "col_id_ndaao69",
+          "name": "id",
+          "type": "int",
+          "nullable": false,
+          "default": null
+        }
+      ],
+      "primaryKey": [],
+      "uniqueConstraints": [],
+      "indexes": [],
+      "position": {
+        "x": 688,
+        "y": 270
+      }
     }
   ],
-  "foreignKeys": []
+  "foreignKeys": [
+    {
+      "id": "fk_8dggxqa",
+      "from": {
+        "table": "tbl_users_web192z",
+        "columns": [
+          "col_beepki_id_yw3ii99"
+        ]
+      },
+      "to": {
+        "table": "tbl_beepki_xcs3cmv",
+        "columns": [
+          "col_id_ndaao69"
+        ]
+      },
+      "onDelete": "NO ACTION",
+      "onUpdate": "NO ACTION"
+    }
+  ]
 }
