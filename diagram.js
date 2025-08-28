@@ -176,7 +176,7 @@ function enablePanZoom(svg, onViewChanged) {
 }
 
 /* --- dragging: ONLY starts from the drag button (.drag-handle) --- */
-function enableDragging(svg, schema, onChange, getSelectedId) {
+function enableDragging(svg, schema, onChange, getSelectedId, onSelectTable, onSelectColumn) {
   const drag = { active: false, id: null, offsetX: 0, offsetY: 0, pointerId: null };
 
   svg.addEventListener('pointerdown', (e) => {
@@ -198,13 +198,17 @@ function enableDragging(svg, schema, onChange, getSelectedId) {
     const table = schema.tables.find(t => t.id === drag.id); if (!table) return;
     const { x: sx, y: sy } = clientToSvgPoint(svg, e.clientX, e.clientY);
     table.position = { x: Math.round(sx - drag.offsetX), y: Math.round(sy - drag.offsetY) };
-    renderSchema(svg, schema, getSelectedId && getSelectedId(), null, null);
+    // IMPORTANT: keep real handlers during drag so selections stay interactive
+    renderSchema(svg, schema, getSelectedId && getSelectedId(), onSelectTable, onSelectColumn);
   });
 
   function endDrag(e) {
     if (!drag.active) return; drag.active = false;
     try { svg.releasePointerCapture(drag.pointerId); } catch (_) { }
-    drag.pointerId = null; onChange && onChange(schema);
+    drag.pointerId = null;
+    onChange && onChange(schema);
+    // Re-render once more with the real handlers to avoid "locked" selection
+    renderSchema(svg, schema, getSelectedId && getSelectedId(), onSelectTable, onSelectColumn);
   }
   svg.addEventListener('pointerup', endDrag); svg.addEventListener('pointercancel', endDrag);
 }

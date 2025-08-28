@@ -4,7 +4,7 @@
   "tables": [
     {
       "id": "tbl_users_web192z",
-      "name": "testing initial state",
+      "name": "zhopa",
       "columns": [
         {
           "id": "col_id_5w0g8x7",
@@ -27,8 +27,20 @@
       ],
       "indexes": [],
       "position": {
-        "x": 366,
-        "y": 146
+        "x": 391,
+        "y": 113
+      }
+    },
+    {
+      "id": "tbl_gg_p8mujwh",
+      "name": "gg",
+      "columns": [],
+      "primaryKey": [],
+      "uniqueConstraints": [],
+      "indexes": [],
+      "position": {
+        "x": 358,
+        "y": 365
       }
     }
   ],

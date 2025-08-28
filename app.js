@@ -370,7 +370,8 @@
 
         // Render & interactions
         Diagram.renderSchema(svg, schema, selectedTableId, selectTable, selectColumn);
-        Diagram.enableDragging(svg, schema, save, () => selectedTableId);
+        // Pass selection callbacks into dragging so renders keep handlers
+        Diagram.enableDragging(svg, schema, save, () => selectedTableId, selectTable, selectColumn);
         Diagram.enablePanZoom(svg, () => { /* persist view? not necessary */ });
 
         // Pre-populate FK target selects
