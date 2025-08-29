@@ -33,6 +33,8 @@
     const fkToCol = document.getElementById('fk-to-col');
     const fkOnDelete = document.getElementById('fk-ondelete');
 
+    const fieldFormTitle = document.getElementById('field-form-title');
+
     UI.fillTypeOptions(ncType);
 
     let schema = null;
@@ -98,7 +100,9 @@
       } else {
         sectionSelected.hidden = true;
       }
-      Diagram.renderSchema(svg, schema, selectedTableId, selectTable, selectColumn);
+      // Reset form title back to "Add Field" when table is (re)selected
+      fieldFormTitle.textContent = 'Add Field';
+      Diagram.renderSchema(svg, schema, selectedTableId, selectTable, selectColumn, selectedColId);
     }
 
     function selectColumn(tableId, colId) {
@@ -125,8 +129,11 @@
       btnAddOrUpdateCol.textContent = 'Save Field';
       btnDeleteCol.removeAttribute('hidden');
 
-      selTitle.textContent = `Selected: ${t.name} • Editing field "${c.name}"`;
-      Diagram.renderSchema(svg, schema, selectedTableId, selectTable, selectColumn);
+      // Update titles
+      selTitle.textContent = `Selected: ${t.name}`;
+      fieldFormTitle.textContent = `Editing “${c.name}” field`;
+
+      Diagram.renderSchema(svg, schema, selectedTableId, selectTable, selectColumn, selectedColId);
     }
 
     function fillToCols(table) {
@@ -328,6 +335,9 @@
       ncPK.checked = false; ncUnique.checked = false; ncNullable.checked = false; ncDefault.value = '';
       btnAddOrUpdateCol.textContent = 'Add Field';
       btnDeleteCol.hidden = true;
+      fieldFormTitle.textContent = 'Add Field';
+      // Re-render to drop highlight on previously edited column
+      Diagram.renderSchema(svg, schema, selectedTableId, selectTable, selectColumn, selectedColId);
     }
 
     // --- FK form
@@ -369,9 +379,9 @@
         save();
 
         // Render & interactions
-        Diagram.renderSchema(svg, schema, selectedTableId, selectTable, selectColumn);
+        Diagram.renderSchema(svg, schema, selectedTableId, selectTable, selectColumn, selectedColId);
         // Pass selection callbacks into dragging so renders keep handlers
-        Diagram.enableDragging(svg, schema, save, () => selectedTableId, selectTable, selectColumn);
+        Diagram.enableDragging(svg, schema, save, () => selectedTableId, () => selectedColId, selectTable, selectColumn);
         Diagram.enablePanZoom(svg, () => { /* persist view? not necessary */ });
 
         // Pre-populate FK target selects
