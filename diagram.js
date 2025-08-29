@@ -1,6 +1,38 @@
 // diagram.js
 const DIAGRAM = { NODE_WIDTH: 240, ROW_H: 22, PADDING_X: 10, HEADER_H: 28, GAP: 8 };
 
+/* --- header colors --- */
+const TABLE_COLORS = {
+  white: '#ffffff',
+  blue:  '#eaf2ff',
+  green: '#e9f8f1',
+  red:   '#ffecec',
+};
+function getHeaderFill(table) {
+  const key = (table && table.color) || 'white';
+  return TABLE_COLORS[key] || TABLE_COLORS.white;
+}
+
+/* Build a path for a rectangle that has ONLY the top corners rounded */
+function roundedTopRectPath(x, y, w, h, rx, ry) {
+  // Clamp radii so they make geometric sense
+  rx = Math.max(0, Math.min(rx || 0, w / 2));
+  ry = Math.max(0, Math.min(ry || 0, h));
+  // Start at top-left inner corner (after radius)
+  // Go to top-right inner corner, arc to the right wall, then down, across bottom, up left wall,
+  // and arc back to the start to round the top-left corner.
+  return [
+    `M ${x + rx},${y}`,
+    `H ${x + w - rx}`,
+    `A ${rx} ${ry} 0 0 1 ${x + w} ${y + ry}`,
+    `V ${y + h}`,
+    `H ${x}`,
+    `V ${y + ry}`,
+    `A ${rx} ${ry} 0 0 1 ${x + rx} ${y}`,
+    'Z'
+  ].join(' ');
+}
+
 /* --- viewport (pan/zoom) state --- */
 const VIEW = { k: 1, tx: 0, ty: 0 }; // scale, translate
 function ensureViewport(svg) {
@@ -48,8 +80,15 @@ function renderTable(svg, table, schema, selectedTableId, selectedColId, onSelec
   const { x, y, width, height } = tableGeometry(table);
 
   // MAIN BOX (selection only)
-  const rect = createSvg('rect', { x, y, rx: 8, ry: 8, width, height, fill: '#fff', stroke: '#ccc', class: 'table-box' });
+  const cornerR = 8;
+  const rect = createSvg('rect', { x, y, rx: cornerR, ry: cornerR, width, height, fill: '#fff', stroke: '#ccc', class: 'table-box' });
   g.appendChild(rect);
+
+  // HEADER BACKGROUND (only header changes color, with rounded top corners)
+  const headerFill = getHeaderFill(table);
+  const headerPath = roundedTopRectPath(x, y, width, DIAGRAM.HEADER_H, cornerR, cornerR);
+  const header = createSvg('path', { d: headerPath, fill: headerFill, class: 'table-header-bg' });
+  g.appendChild(header);
 
   // TITLE
   const title = createSvg('text', { x: x + DIAGRAM.PADDING_X, y: y + DIAGRAM.HEADER_H / 2, class: 'table-title', 'dominant-baseline': 'middle' });
@@ -95,7 +134,8 @@ function renderTable(svg, table, schema, selectedTableId, selectedColId, onSelec
   // selection (click anywhere on the group EXCEPT the drag button / text handlers)
   g.addEventListener('click', (e) => { onSelectTable && onSelectTable(table.id); e.stopPropagation(); });
 
-  vp.appendChild(g);
+  const vpNode = ensureViewport(svg);
+  vpNode.appendChild(g);
 }
 
 function ensureArrowMarker(svg) {

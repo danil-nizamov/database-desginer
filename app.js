@@ -18,6 +18,7 @@
 
     const fRename = document.getElementById('form-rename-table');
     const rtName = document.getElementById('rt-name');
+    const rtColor = document.getElementById('rt-color'); // NEW: table color selector
 
     const fNewCol = document.getElementById('form-new-col');
     const ncName = document.getElementById('nc-name');
@@ -92,6 +93,9 @@
         sectionSelected.hidden = false;
         selTitle.textContent = `Selected: ${t.name}`;
         rtName.value = t.name;
+        // NEW: initialize color selector (default to white)
+        rtColor.value = t.color || 'white';
+
         // update FK dropdowns
         UI.fillColumns(fkFromCol, t);
         UI.fillTables(fkToTable, schema);
@@ -133,6 +137,9 @@
       selTitle.textContent = `Selected: ${t.name}`;
       fieldFormTitle.textContent = `Editing “${c.name}” field`;
 
+      // Initialize color selector when entering via column edit too
+      rtColor.value = t.color || 'white';
+
       Diagram.renderSchema(svg, schema, selectedTableId, selectTable, selectColumn, selectedColId);
     }
 
@@ -164,7 +171,8 @@
         primaryKey: [],
         uniqueConstraints: [],
         indexes: [],
-        position: { x: 80 + 40 * schema.tables.length, y: 80 + 40 * schema.tables.length }
+        position: { x: 80 + 40 * schema.tables.length, y: 80 + 40 * schema.tables.length },
+        color: 'white' // NEW: default color
       };
       schema.tables.push(t);
       save(); setStatus(`Added table "${uniqueName}"`);
@@ -178,6 +186,15 @@
         setStatus('Name already used'); return;
       }
       t.name = clean; save(); selectTable(id);
+    }
+
+    function setTableColor(id, colorKey) {
+      const t = schema.tables.find(x => x.id === id); if (!t) return;
+      // guard against unknown values
+      const allowed = new Set(['white','blue','green','red']);
+      t.color = allowed.has(colorKey) ? colorKey : 'white';
+      save();
+      Diagram.renderSchema(svg, schema, selectedTableId, selectTable, selectColumn, selectedColId);
     }
 
     function deleteTable(id) {
@@ -279,6 +296,12 @@
 
     fRename.addEventListener('submit', (e) => {
       e.preventDefault(); if (!selectedTableId) return; renameTable(selectedTableId, rtName.value);
+    });
+
+    // NEW: color change handler
+    rtColor.addEventListener('change', () => {
+      if (!selectedTableId) return;
+      setTableColor(selectedTableId, rtColor.value);
     });
 
     btnDelTable.addEventListener('click', () => {

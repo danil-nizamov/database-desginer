@@ -27,4 +27,7 @@ const TYPES = [
     });
   }
 
-  window.UI = { fillTypeOptions, fillColumns, fillTables, TYPES };
+  // (optional) expose color list for other scripts if needed
+  const TABLE_COLOR_KEYS = ['white','blue','green','red'];
+
+  window.UI = { fillTypeOptions, fillColumns, fillTables, TYPES, TABLE_COLOR_KEYS };

@@ -34,9 +34,10 @@
       ],
       "indexes": [],
       "position": {
-        "x": 376,
-        "y": 145
-      }
+        "x": 239,
+        "y": 112
+      },
+      "color": "green"
     },
     {
       "id": "tbl_beepki_xcs3cmv",
@@ -56,7 +57,8 @@
       "position": {
         "x": 688,
         "y": 270
-      }
+      },
+      "color": "red"
     }
   ],
   "foreignKeys": [

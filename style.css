@@ -55,3 +55,6 @@
     animation: colPulse 1.2s ease-in-out infinite;
     font-weight: 600;
   }
+
+  /* Optional: let header bg take full width neatly (no extra styles required) */
+  .table-header-bg { /* fill set in SVG */ }
