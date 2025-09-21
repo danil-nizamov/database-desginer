@@ -1,43 +1,106 @@
+/* ===========================
+   YOUR STYLES (colors+font+button shape updated ONLY)
+   =========================== */
+
+/* Variables mapped to the other app’s palette (light) */
 :root {
-    --bg: #f7f7f9; --fg: #222; --muted: #666; --box: #fff;
-    --stroke: #999; --key: #0b6; --fk: #06c; --danger: #c0392b;
-    --accent: #3b82f6;
+    --bg: #ffffff;                      /* base background */
+    --fg: rgb(24, 33, 57);              /* text-primary */
+    --muted: rgb(73, 85, 115);          /* use secondary (clearer than ultra-muted) */
+    --box: #ffffff;                     /* surface */
+    --stroke: #cbd5e1;                  /* border-secondary (visible) */
+    --key: #059669;                     /* success */
+    --fk: #0ea5e9;                      /* accent-primary */
+    --danger: #dc2626;                  /* error */
+    --accent: #0ea5e9;                  /* accent-primary */
   }
+
+  /* Dark mode: override only color variables */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1e2640;
+      --fg: #ffffff;
+      --muted: rgb(193, 199, 215);
+      --box: #26314c;                   /* surface (dark) */
+      --stroke: rgba(193, 199, 215, 0.35);
+      --key: #10b981;
+      --fk: #38bdf8;
+      --danger: #ef4444;
+      --accent: #38bdf8;
+    }
+  }
+
   *{box-sizing:border-box}
   html,body{height:100%;margin:0}
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--fg);background:var(--bg)}
-  header{display:flex;align-items:baseline;gap:1rem;padding:.75rem 1rem;border-bottom:1px solid #e3e3e8;background:#fff}
+
+  /* FONT: switched to Work Sans; no other body props changed */
+  body{
+    font-family:"Work Sans","Work Sans Fallback",ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    color:var(--fg);
+    background:var(--bg)
+  }
+
+  header{
+    display:flex;align-items:baseline;gap:1rem;padding:.75rem 1rem;
+    border-bottom:1px solid var(--stroke);
+    background:var(--box)
+  }
   header h1{font-size:1.1rem;margin:0}
   #status{font-size:.9rem;color:var(--muted)}
 
   main.layout{display:grid;grid-template-columns:300px 1fr;height:calc(100% - 50px)}
   #diagram-wrap{width:100%;height:100%}
-  #diagram{background:#fafbfc}
-  aside#sidebar{padding:10px;overflow:auto;border-right:1px solid #e5e5ea;background:#fbfbfd}
-  .card{background:#fff;border:1px solid #eee;border-radius:8px;padding:10px;margin-bottom:10px}
+
+  /* was #fafbfc → subtle/elevated feel using a light tint from palette */
+  #diagram{background:#f8fafc}
+
+  aside#sidebar{
+    padding:10px;overflow:auto;border-right:1px solid var(--stroke);
+    background:#f8fafc
+  }
+  .card{
+    background:var(--box);
+    border:1px solid #e2e8f0; /* slightly lighter than --stroke like your original #eee */
+    border-radius:8px;padding:10px;margin-bottom:10px
+  }
   .row{display:flex;align-items:center;gap:.5rem}
   .row-between{display:flex;align-items:center;justify-content:space-between}
   label{display:flex;flex-direction:column;gap:.25rem;margin:.4rem 0}
   /* Keep checkbox + text on one line for labels that use .row */
   label.row{flex-direction:row;align-items:center;gap:.5rem}
-  input,select,button{padding:.5rem;border:1px solid #ddd;border-radius:6px;font:inherit}
-  input[type="checkbox"]{padding:0}
-  button{cursor:pointer}
-  button.danger{background:#ffe9e7;border-color:#ffd5d1;color:var(--danger)}
-  hr{border:none;border-top:1px solid #eee;margin:10px 0}
 
-  text{font-size:12px;fill:#222;dominant-baseline:middle}
+  /* Inputs keep their original 6px radius; border color updated to palette */
+  input,select,button{padding:.5rem;border:1px solid #e2e8f0;border-radius:6px;font:inherit}
+  input[type="checkbox"]{padding:0}
+
+  /* BUTTON SHAPE ONLY: round buttons more without touching inputs */
+  button{cursor:pointer;border-radius:.5rem}
+
+  /* Danger button colors mapped to semantic tokens (no layout change) */
+  button.danger{
+    background:#fef2f2;        /* error-bg */
+    border-color:#fecaca;      /* error-border */
+    color:var(--danger)
+  }
+
+  hr{border:none;border-top:1px solid #e2e8f0;margin:10px 0}
+
+  text{font-size:12px;fill:var(--fg);dominant-baseline:middle}
   .table-title{font-weight:600}
-  .table.selected rect{stroke:#3b82f6;stroke-width:2}
+
+  /* Keep selection accent; tables’ own data colors are not changed */
+  .table.selected rect{stroke:var(--accent);stroke-width:2}
+
   .table .drag-handle,
   .table .drag-button { cursor: grab; }
   .table .drag-button:active { cursor: grabbing; }
+
   .edge{stroke:var(--fk);stroke-width:1.5;fill:none}
   .edge-marker{fill:var(--fk)}
 
-  /* Visuals for the drag button */
-  .drag-btn-bg { fill: #f2f3f5; stroke: #d0d0d7; }
-  .drag-btn-dot { fill: #888; }
+  /* Drag button visuals mapped to palette neutrals */
+  .drag-btn-bg { fill: #f1f5f9; stroke: #cbd5e1; }
+  .drag-btn-dot { fill: rgb(73, 85, 115); }
 
   /* Pan/zoom UX */
   #diagram { cursor: default; }
