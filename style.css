@@ -13,6 +13,10 @@
 
   /* Dark mode: override only color variables */
   @media (prefers-color-scheme: dark) {
+    body {
+        background: var(--bg); /* now uses the dark --bg (#1e2640) */
+        color: var(--fg);      /* ensures text switches too */
+    }
     :root {
       --bg: #1e2640;
       --fg: #ffffff;
