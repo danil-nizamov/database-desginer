@@ -18,7 +18,7 @@
 
     const fRename = document.getElementById('form-rename-table');
     const rtName = document.getElementById('rt-name');
-    const rtColor = document.getElementById('rt-color'); // NEW: table color selector
+    const rtColor = document.getElementById('rt-color');
 
     const fNewCol = document.getElementById('form-new-col');
     const ncName = document.getElementById('nc-name');
@@ -93,7 +93,6 @@
         sectionSelected.hidden = false;
         selTitle.textContent = `Selected: ${t.name}`;
         rtName.value = t.name;
-        // NEW: initialize color selector (default to white)
         rtColor.value = t.color || 'white';
 
         // update FK dropdowns
@@ -106,6 +105,11 @@
       }
       // Reset form title back to "Add Field" when table is (re)selected
       fieldFormTitle.textContent = 'Add Field';
+
+      // clear FK status row in field form when switching tables
+      fkStatusText.textContent = '';
+      btnRemoveFK.hidden = true;
+
       Diagram.renderSchema(svg, schema, selectedTableId, selectTable, selectColumn, selectedColId);
     }
 
@@ -140,6 +144,21 @@
       // Initialize color selector when entering via column edit too
       rtColor.value = t.color || 'white';
 
+      // Show outgoing FK status (if any) for this column
+      const outgoingFK = (schema.foreignKeys || []).find(fk =>
+        fk.from.table === t.id && fk.from.columns.includes(c.id)
+      );
+      if (outgoingFK) {
+        const toTbl = schema.tables.find(tt => tt.id === outgoingFK.to.table);
+        const toCol = toTbl?.columns.find(cc => cc.id === outgoingFK.to.columns[0]);
+        const toLabel = toTbl && toCol ? `${toTbl.name}.${toCol.name}` : '(unknown)';
+        fkStatusText.textContent = `Foreign key → ${toLabel}`;
+        btnRemoveFK.hidden = false;
+      } else {
+        fkStatusText.textContent = '';
+        btnRemoveFK.hidden = true;
+      }
+
       Diagram.renderSchema(svg, schema, selectedTableId, selectTable, selectColumn, selectedColId);
     }
 
@@ -172,7 +191,7 @@
         uniqueConstraints: [],
         indexes: [],
         position: { x: 80 + 40 * schema.tables.length, y: 80 + 40 * schema.tables.length },
-        color: 'white' // NEW: default color
+        color: 'white' // default color
       };
       schema.tables.push(t);
       save(); setStatus(`Added table "${uniqueName}"`);
@@ -289,6 +308,24 @@
       save(); selectTable(fromTableId);
     }
 
+    // helper to remove outgoing FK(s) from a specific field
+    function removeForeignKeyForField(fromTableId, fromColId) {
+      if (!schema?.foreignKeys) return;
+      const before = schema.foreignKeys.length;
+      schema.foreignKeys = schema.foreignKeys.filter(fk =>
+        !(fk.from.table === fromTableId && fk.from.columns.includes(fromColId))
+      );
+      const removed = before - schema.foreignKeys.length;
+      if (removed > 0) {
+        save();
+        setStatus(`Removed ${removed} foreign key${removed > 1 ? 's' : ''} from field`);
+      } else {
+        setStatus('No foreign key to remove for this field');
+      }
+      // stay in edit mode for this column so the user sees the result
+      selectColumn(fromTableId, fromColId);
+    }
+
     // --- Wire UI (tables)
     fNewTable.addEventListener('submit', (e) => {
       e.preventDefault(); addTable(ntName.value); ntName.value = '';
@@ -298,7 +335,7 @@
       e.preventDefault(); if (!selectedTableId) return; renameTable(selectedTableId, rtName.value);
     });
 
-    // NEW: color change handler
+    // color change handler
     rtColor.addEventListener('change', () => {
       if (!selectedTableId) return;
       setTableColor(selectedTableId, rtColor.value);
@@ -323,6 +360,27 @@
     btnRow.appendChild(btnAddOrUpdateCol);
     btnRow.appendChild(btnDeleteCol);
     fNewCol.appendChild(btnRow);
+
+    /* NEW: FK status + remove button (only visible when the selected column has an outgoing FK) */
+    const fkStatusWrap = document.createElement('div');
+    fkStatusWrap.className = 'row-between';
+    fkStatusWrap.style.marginTop = '.25rem';
+
+    const fkStatusText = document.createElement('div');
+    fkStatusText.id = 'fk-status-text';
+    fkStatusText.style.fontSize = '.9rem';
+    fkStatusText.style.color = 'var(--muted)';
+    fkStatusText.textContent = '';
+
+    const btnRemoveFK = document.createElement('button');
+    btnRemoveFK.type = 'button';
+    btnRemoveFK.className = 'danger';
+    btnRemoveFK.textContent = 'Remove FK';
+    btnRemoveFK.hidden = true;
+
+    fkStatusWrap.appendChild(fkStatusText);
+    fkStatusWrap.appendChild(btnRemoveFK);
+    fNewCol.appendChild(fkStatusWrap);
 
     fNewCol.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -352,6 +410,14 @@
       }
     });
 
+    // remove-FK handler
+    btnRemoveFK.addEventListener('click', () => {
+      if (!selectedTableId || !selectedColId) return;
+      if (confirm('Remove the foreign key from this field?')) {
+        removeForeignKeyForField(selectedTableId, selectedColId);
+      }
+    });
+
     function clearFieldForm() {
       selectedColId = null;
       ncName.value = '';
@@ -359,6 +425,9 @@
       btnAddOrUpdateCol.textContent = 'Add Field';
       btnDeleteCol.hidden = true;
       fieldFormTitle.textContent = 'Add Field';
+      // clear FK status UI
+      fkStatusText.textContent = '';
+      btnRemoveFK.hidden = true;
       // Re-render to drop highlight on previously edited column
       Diagram.renderSchema(svg, schema, selectedTableId, selectTable, selectColumn, selectedColId);
     }
