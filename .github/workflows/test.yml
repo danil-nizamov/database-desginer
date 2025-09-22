@@ -1,0 +1,102 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: tests/package-lock.json
+
+    - name: Install dependencies
+      working-directory: ./tests
+      run: npm ci
+
+    - name: Run unit tests
+      working-directory: ./tests
+      run: npm test
+
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./tests/coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
+
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: tests/package-lock.json
+
+    - name: Install dependencies
+      working-directory: ./tests
+      run: npm ci
+
+    - name: Install Playwright browsers
+      working-directory: ./tests
+      run: npx playwright install --with-deps
+
+    - name: Run integration tests
+      working-directory: ./tests
+      run: npm run test:integration
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: playwright-report
+        path: tests/playwright-report/
+        retention-days: 30
+
+  test-matrix:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: ['16', '18', '20']
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: tests/package-lock.json
+
+    - name: Install dependencies
+      working-directory: ./tests
+      run: npm ci
+
+    - name: Run unit tests
+      working-directory: ./tests
+      run: npm test
+
+    - name: Install Playwright browsers
+      working-directory: ./tests
+      run: npx playwright install --with-deps
+
+    - name: Run integration tests
+      working-directory: ./tests
+      run: npm run test:integration
