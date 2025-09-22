@@ -121,3 +121,27 @@
 
   /* Optional: let header bg take full width neatly (no extra styles required) */
   .table-header-bg { /* fill set in SVG */ }
+
+  /* --- help button alignment --- */
+.spacer { flex: 1; }
+#btn-help { margin-left: auto; }
+/* --- anchor that looks like a button (no libraries) --- */
+.as-button {
+  display: inline-block;
+  padding: .5rem .75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: .5rem;
+  font: inherit;
+  text-decoration: none;
+  color: var(--fg);
+  background: var(--box);
+}
+.as-button:hover { filter: brightness(0.98); }
+
+.as-button.ghost {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+@media (prefers-color-scheme: dark) {
+  .as-button.ghost { background: #2b3654; }
+}

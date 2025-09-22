@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Help • DB Schema Designer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Reuse your palette + typography (no extra deps) -->
+  <link rel="stylesheet" href="../style.css" />
+
+  <!-- Minimal doc styling (scoped) -->
+  <style>
+    :root {
+      /* optional: tweak reading width per your taste */
+      --doc-max: 960px;
+    }
+    body {
+      /* inherit colors from style.css via CSS vars */
+      background: var(--bg);
+      color: var(--fg);
+    }
+    .doc {
+      max-width: var(--doc-max);
+      margin: 32px auto;
+      padding: 0 16px 48px;
+      line-height: 1.6;
+    }
+    .doc header.doc-head {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+    }
+    .doc .back {
+      text-decoration: none; border: 1px solid #e2e8f0; border-radius: .5rem;
+      padding: .4rem .6rem; color: var(--fg); background: var(--box);
+    }
+    .doc h1 { margin: 0.2rem 0 0.5rem; font-size: 1.6rem; }
+    .doc h2 { margin-top: 2rem; font-size: 1.25rem; }
+    .doc h3 { margin-top: 1.25rem; font-size: 1.05rem; }
+    .doc p, .doc li { color: var(--fg); }
+    .doc code, .doc pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: rgba(148, 163, 184, .12);
+      border-radius: 6px;
+    }
+    .doc code { padding: .15em .35em; }
+    .doc pre { padding: .75rem; overflow: auto; }
+    .doc img, .doc video {
+      max-width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--stroke);
+    }
+    nav.toc {
+      margin: 16px 0 28px; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: var(--box);
+    }
+    nav.toc ul { margin: 0; padding-left: 1rem; }
+    nav.toc a { text-decoration: none; }
+    details { border: 1px solid #e2e8f0; border-radius: 8px; padding: .6rem .8rem; background: var(--box); }
+    details + details { margin-top: .8rem; }
+    details summary { cursor: pointer; font-weight: 600; }
+
+    @media print {
+      .doc .back, nav.toc { display: none; }
+      .doc { margin: 0; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="doc">
+    <header class="doc-head">
+      <a class="back" href="../index.html">← Back to App</a>
+      <h1>Help / User Guide</h1>
+    </header>
+
+    <nav class="toc">
+      <strong>Contents</strong>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#pan-zoom">Pan &amp; Zoom</a></li>
+        <li><a href="#moving-tables">Moving Tables</a></li>
+        <li><a href="#fields">Adding &amp; Editing Fields</a></li>
+        <li><a href="#keys">Primary &amp; Unique Keys</a></li>
+        <li><a href="#foreign-keys">Foreign Keys</a></li>
+        <li><a href="#saving">Saving &amp; Loading</a></li>
+        <li><a href="#shortcuts">Shortcuts</a></li>
+        <li><a href="#faq">Troubleshooting / FAQ</a></li>
+      </ul>
+    </nav>
+
+    <section id="overview">
+      <h2>Overview</h2>
+      <p>This page explains how to use the DB Schema Designer: create tables, add fields, set keys, connect tables, and save your work.</p>
+      <!-- Example hero image: drop files into help/img/ and link relatively -->
+      <!-- <img src="./img/overview.png" alt="Overview of the UI"> -->
+    </section>
+
+    <section id="pan-zoom">
+      <h2>Pan &amp; Zoom</h2>
+      <ul>
+        <li>Use the mouse wheel to <em>zoom</em> in/out. The view zooms around your cursor.</li>
+        <li><strong>Drag the empty background</strong> to pan the canvas.</li>
+      </ul>
+      <!-- <img src="./img/pan-zoom.gif" alt="Pan and zoom demonstration"> -->
+    </section>
+
+    <section id="moving-tables">
+      <h2>Moving Tables</h2>
+      <p>Grab the dotted handle in the table header to drag a table.</p>
+      <!-- <img src="./img/drag-handle.png" alt="The drag handle on a table"> -->
+    </section>
+
+    <section id="fields">
+      <h2>Adding &amp; Editing Fields</h2>
+      <ol>
+        <li>Select a table from the diagram.</li>
+        <li>Use the <em>Add Field</em> form in the sidebar: name, type, nullable/default, primary/unique.</li>
+        <li>Click a field in the diagram to edit it again.</li>
+      </ol>
+      <!-- <img src="./img/add-field.png" alt="Adding a field"> -->
+    </section>
+
+    <section id="keys">
+      <h2>Primary &amp; Unique Keys</h2>
+      <p>Mark a field as <strong>Primary key</strong> or <strong>Unique</strong> in the field form. Primary keys are shown with a key icon.</p>
+    </section>
+
+    <section id="foreign-keys">
+      <h2>Foreign Keys</h2>
+      <ol>
+        <li>Choose the <em>From column</em>, <em>To table</em>, and <em>To column</em>.</li>
+        <li>Pick an <em>On Delete</em> action (e.g., CASCADE).</li>
+        <li>Click <em>Add FK</em>. Arrows will appear between related tables.</li>
+      </ol>
+      <p>To remove an FK for a field, select the field and use the <em>Remove</em> option (status text will confirm).</p>
+      <!-- <img src="./img/add-fk.png" alt="Adding a foreign key"> -->
+    </section>
+
+    <section id="saving">
+      <h2>Saving &amp; Loading</h2>
+      <ul>
+        <li><strong>Save solution</strong> – saves your schema to the server endpoint the app is configured with.</li>
+        <li>Local autosave may also use <code>localStorage</code> when enabled.</li>
+      </ul>
+    </section>
+
+  </main>
+</body>
+</html>
