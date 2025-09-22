@@ -6,15 +6,9 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "test:integration": "playwright test",
-    "test:integration:ui": "playwright test --ui",
-    "test:all": "npm run test && npm run test:integration",
-    "install:playwright": "playwright install"
+    "test:coverage": "jest --coverage"
   },
   "devDependencies": {
-    "@playwright/test": "^1.40.0",
-    "http-server": "^14.1.1",
     "jest": "^28.1.3",
     "jest-environment-jsdom": "^28.1.3",
     "jest-fetch-mock": "^3.0.3"
