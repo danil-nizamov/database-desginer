@@ -1,7 +1,3 @@
-/* ===========================
-   YOUR STYLES (colors+font+button shape updated ONLY)
-   =========================== */
-
 /* Variables mapped to the other app’s palette (light) */
 :root {
     --bg: #ffffff;                      /* base background */
@@ -33,7 +29,6 @@
   *{box-sizing:border-box}
   html,body{height:100%;margin:0}
 
-  /* FONT: switched to Work Sans; no other body props changed */
   body{
     font-family:"Work Sans","Work Sans Fallback",ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
     color:var(--fg);
@@ -51,7 +46,6 @@
   main.layout{display:grid;grid-template-columns:300px 1fr;height:calc(100% - 50px)}
   #diagram-wrap{width:100%;height:100%}
 
-  /* was #fafbfc → subtle/elevated feel using a light tint from palette */
   #diagram{background:#f8fafc}
 
   aside#sidebar{
@@ -60,20 +54,16 @@
   }
   .card{
     background:var(--box);
-    border:1px solid #e2e8f0; /* slightly lighter than --stroke like your original #eee */
+    border:1px solid #e2e8f0;
     border-radius:8px;padding:10px;margin-bottom:10px
   }
   .row{display:flex;align-items:center;gap:.5rem}
   .row-between{display:flex;align-items:center;justify-content:space-between}
   label{display:flex;flex-direction:column;gap:.25rem;margin:.4rem 0}
-  /* Keep checkbox + text on one line for labels that use .row */
   label.row{flex-direction:row;align-items:center;gap:.5rem}
 
-  /* Inputs keep their original 6px radius; border color updated to palette */
   input,select,button{padding:.5rem;border:1px solid #e2e8f0;border-radius:6px;font:inherit}
   input[type="checkbox"]{padding:0}
-
-  /* BUTTON SHAPE ONLY: round buttons more without touching inputs */
   button{cursor:pointer;border-radius:.5rem}
 
   /* Danger button colors mapped to semantic tokens (no layout change) */
@@ -88,7 +78,6 @@
   text{font-size:12px;fill:var(--fg);dominant-baseline:middle}
   .table-title{font-weight:600}
 
-  /* Keep selection accent; tables’ own data colors are not changed */
   .table.selected rect{stroke:var(--accent);stroke-width:2}
 
   .table .drag-handle,
@@ -98,7 +87,6 @@
   .edge{stroke:var(--fk);stroke-width:1.5;fill:none}
   .edge-marker{fill:var(--fk)}
 
-  /* Drag button visuals mapped to palette neutrals */
   .drag-btn-bg { fill: #f1f5f9; stroke: #cbd5e1; }
   .drag-btn-dot { fill: rgb(73, 85, 115); }
 
@@ -119,13 +107,12 @@
     font-weight: 600;
   }
 
-  /* Optional: let header bg take full width neatly (no extra styles required) */
   .table-header-bg { /* fill set in SVG */ }
 
   /* --- help button alignment --- */
 .spacer { flex: 1; }
 #btn-help { margin-left: auto; }
-/* --- anchor that looks like a button (no libraries) --- */
+
 .as-button {
   display: inline-block;
   padding: .5rem .75rem;
