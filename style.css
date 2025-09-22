@@ -1,6 +1,21 @@
-/* ===========================
-   YOUR STYLES (colors+font+button shape updated ONLY)
-   =========================== */
+/* Put these with your other :root vars */
+:root {
+    /* header fills (light) */
+    --tbl-white: #ffffff;
+    --tbl-blue:  #8eb3f0;
+    --tbl-green: #bbe5d1;
+    --tbl-red:   #f8caca;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      /* darker tints that read well with white text */
+      --tbl-white: #4a5a7b; /* slate-ish */
+      --tbl-blue:  #0c2658; /* deep blue */
+      --tbl-green: #07402d; /* deep green */
+      --tbl-red:   #5d1d1d; /* deep red */
+    }
+  }
 
 /* Variables mapped to the other app’s palette (light) */
 :root {
@@ -13,10 +28,18 @@
     --fk: #0ea5e9;                      /* accent-primary */
     --danger: #dc2626;                  /* error */
     --accent: #0ea5e9;                  /* accent-primary */
+    --canvas: #f8fafc;                  /* was hard-coded on #diagram */
+    --control-bg: #ffffff;              /* inputs & buttons bg (light) */
+    --control-border: #e2e8f0;          /* inputs & buttons border (light) */
+    --fk: #0ea5e9; /* light blue for light theme */
   }
 
   /* Dark mode: override only color variables */
   @media (prefers-color-scheme: dark) {
+    body {
+        background: var(--bg); /* now uses the dark --bg (#1e2640) */
+        color: var(--fg);      /* ensures text switches too */
+    }
     :root {
       --bg: #1e2640;
       --fg: #ffffff;
@@ -27,13 +50,16 @@
       --fk: #38bdf8;
       --danger: #ef4444;
       --accent: #38bdf8;
+      --canvas: #1e2640;
+      --control-bg: #1f2937;
+      --control-border: #94a3b8;
+      --fk: #ffffff; /* arrows & markers turn white in dark theme */
     }
   }
 
   *{box-sizing:border-box}
   html,body{height:100%;margin:0}
 
-  /* FONT: switched to Work Sans; no other body props changed */
   body{
     font-family:"Work Sans","Work Sans Fallback",ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
     color:var(--fg);
@@ -51,30 +77,56 @@
   main.layout{display:grid;grid-template-columns:300px 1fr;height:calc(100% - 50px)}
   #diagram-wrap{width:100%;height:100%}
 
-  /* was #fafbfc → subtle/elevated feel using a light tint from palette */
-  #diagram{background:#f8fafc}
+  #diagram{ background: var(--canvas); }
 
   aside#sidebar{
     padding:10px;overflow:auto;border-right:1px solid var(--stroke);
-    background:#f8fafc
+    background: var(--bg);
   }
   .card{
     background:var(--box);
-    border:1px solid #e2e8f0; /* slightly lighter than --stroke like your original #eee */
+    border:1px solid #e2e8f0;
     border-radius:8px;padding:10px;margin-bottom:10px
   }
   .row{display:flex;align-items:center;gap:.5rem}
   .row-between{display:flex;align-items:center;justify-content:space-between}
   label{display:flex;flex-direction:column;gap:.25rem;margin:.4rem 0}
-  /* Keep checkbox + text on one line for labels that use .row */
   label.row{flex-direction:row;align-items:center;gap:.5rem}
 
-  /* Inputs keep their original 6px radius; border color updated to palette */
-  input,select,button{padding:.5rem;border:1px solid #e2e8f0;border-radius:6px;font:inherit}
+  /* Make controls use the tokens in both modes */
+  input, select, button {
+    padding: .5rem;
+    border: 0.5px solid var(--control-border);
+    border-radius: 6px;
+    background: var(--control-bg);
+    color: var(--fg);
+    font: inherit;
+  }
   input[type="checkbox"]{padding:0}
-
-  /* BUTTON SHAPE ONLY: round buttons more without touching inputs */
   button{cursor:pointer;border-radius:.5rem}
+
+  /* Dark-mode specifics */
+@media (prefers-color-scheme: dark) {
+    /* 1) Sidebar “menus” (cards) should have no border in dark */
+    .card { border: none; }
+
+    /* 2) Buttons should be dark with light-grey border */
+    button { background: var(--control-bg); border-color: var(--control-border); }
+
+    /* Optional: make the danger button less blinding in dark */
+    button.danger {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.45);
+    color: var(--danger);
+    }
+
+    /* 3) Inputs dark with grey default (placeholder) text */
+    input::placeholder,
+    textarea::placeholder {
+    color: var(--muted);
+    opacity: 1; /* ensure consistent grey */
+    }
+}
 
   /* Danger button colors mapped to semantic tokens (no layout change) */
   button.danger{
@@ -87,8 +139,11 @@
 
   text{font-size:12px;fill:var(--fg);dominant-baseline:middle}
   .table-title{font-weight:600}
+  .table-box {
+    fill: var(--box) !important;
+    stroke: var(--stroke) !important;
+  }
 
-  /* Keep selection accent; tables’ own data colors are not changed */
   .table.selected rect{stroke:var(--accent);stroke-width:2}
 
   .table .drag-handle,
@@ -98,7 +153,6 @@
   .edge{stroke:var(--fk);stroke-width:1.5;fill:none}
   .edge-marker{fill:var(--fk)}
 
-  /* Drag button visuals mapped to palette neutrals */
   .drag-btn-bg { fill: #f1f5f9; stroke: #cbd5e1; }
   .drag-btn-dot { fill: rgb(73, 85, 115); }
 
@@ -119,13 +173,12 @@
     font-weight: 600;
   }
 
-  /* Optional: let header bg take full width neatly (no extra styles required) */
   .table-header-bg { /* fill set in SVG */ }
 
   /* --- help button alignment --- */
 .spacer { flex: 1; }
 #btn-help { margin-left: auto; }
-/* --- anchor that looks like a button (no libraries) --- */
+
 .as-button {
   display: inline-block;
   padding: .5rem .75rem;

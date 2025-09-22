@@ -1,17 +1,21 @@
 // diagram.js
 const DIAGRAM = { NODE_WIDTH: 240, ROW_H: 22, PADDING_X: 10, HEADER_H: 28, GAP: 8 };
 
-/* --- header colors --- */
-const TABLE_COLORS = {
-  white: '#ffffff',
-  blue:  '#eaf2ff',
-  green: '#e9f8f1',
-  red:   '#ffecec',
-};
-function getHeaderFill(table) {
-  const key = (table && table.color) || 'white';
-  return TABLE_COLORS[key] || TABLE_COLORS.white;
-}
+/* --- header colors (theme-aware via CSS variables) --- */
+const TABLE_COLOR_VARS = {
+    white: '--tbl-white',
+    blue:  '--tbl-blue',
+    green: '--tbl-green',
+    red:   '--tbl-red',
+  };
+
+  function getHeaderFill(table) {
+    const key = (table && table.color) || 'white';
+    const varName = TABLE_COLOR_VARS[key] || '--tbl-white';
+    const val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    return val || '#ffffff';
+  }
+
 
 /* Build a path for a rectangle that has ONLY the top corners rounded */
 function roundedTopRectPath(x, y, w, h, rx, ry) {
