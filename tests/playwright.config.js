@@ -5,14 +5,24 @@ module.exports = defineConfig({
   testDir: './integration',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  retries: process.env.CI ? 1 : 0,
+  workers: process.env.CI ? 2 : undefined,
+  timeout: 30 * 1000, // 30 seconds per test
   reporter: 'html',
   use: {
     baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
+    actionTimeout: 10 * 1000, // 10 seconds for actions
+    navigationTimeout: 30 * 1000, // 30 seconds for navigation
   },
-  projects: [
+  projects: process.env.CI ? [
+    // In CI, only run chromium for speed
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+  ] : [
+    // In local development, run all browsers
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
@@ -31,5 +41,7 @@ module.exports = defineConfig({
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000, // 2 minutes
+    stdout: 'pipe',
+    stderr: 'pipe',
   },
 });
