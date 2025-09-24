@@ -115,12 +115,12 @@
     color: var(--fg);
   }
   .row{display:flex;align-items:center;gap:.5rem}
-  .row-between{display:flex;align-items:center;justify-content:space-between}
+  .row-between{display:flex;align-items:center;justify-content:flex-start;gap:1rem}
 
   /* FK status text styling to fix alignment */
   #fk-status-text {
-    flex: 0 0 auto;
-    max-width: 120px;
+    flex: 0 1 auto;
+    max-width: none;
     margin: 0;
     padding: 0;
     white-space: nowrap;
@@ -172,6 +172,17 @@
   }
   input[type="checkbox"]{padding:0}
   button{cursor:pointer;border-radius:.5rem;margin-top:.5rem}
+
+  /* Fix for FK remove button positioning */
+  .row-between button {
+    margin-top: 0;
+    flex-shrink: 0;
+  }
+
+  /* Ensure FK status wrapper takes full width */
+  .row-between {
+    width: 100%;
+  }
 
   /* Dark-mode specifics */
 @media (prefers-color-scheme: dark) {
