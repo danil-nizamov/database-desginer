@@ -41,8 +41,8 @@
       ],
       "indexes": [],
       "position": {
-        "x": 821,
-        "y": 342
+        "x": 599,
+        "y": 179
       }
     },
     {
@@ -77,21 +77,22 @@
       "uniqueConstraints": [],
       "indexes": [],
       "position": {
-        "x": 400,
-        "y": 383
+        "x": 234,
+        "y": 109
       }
     },
     {
-      "id": "tbl_meow_jp8fv68",
-      "name": "meow",
+      "id": "tbl_m_gwp78qw",
+      "name": "m",
       "columns": [],
       "primaryKey": [],
       "uniqueConstraints": [],
       "indexes": [],
       "position": {
-        "x": 484,
-        "y": 262
-      }
+        "x": 160,
+        "y": 269
+      },
+      "color": "white"
     }
   ],
   "foreignKeys": [

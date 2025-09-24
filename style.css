@@ -1,3 +1,6 @@
+/* Import Work Sans font */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap');
+
 /* Put these with your other :root vars */
 :root {
     /* header fills (light) */
@@ -17,8 +20,9 @@
     }
   }
 
-/* Variables mapped to the other app’s palette (light) */
+/* Variables mapped to the other app's palette (light) */
 :root {
+    --font-work-sans: "Work Sans", ui-sans-serif, system-ui, sans-serif;
     --bg: #ffffff;                      /* base background */
     --fg: rgb(24, 33, 57);              /* text-primary */
     --muted: rgb(73, 85, 115);          /* use secondary (clearer than ultra-muted) */
@@ -37,20 +41,20 @@
   /* Dark mode: override only color variables */
   @media (prefers-color-scheme: dark) {
     body {
-        background: var(--bg); /* now uses the dark --bg (#1e2640) */
+        background: var(--bg); /* now uses the dark --bg (#1d2740) */
         color: var(--fg);      /* ensures text switches too */
     }
     :root {
-      --bg: #1e2640;
+      --bg: #1d2740;                    /* inactive background */
       --fg: #ffffff;
       --muted: rgb(193, 199, 215);
-      --box: #26314c;                   /* surface (dark) */
+      --box: #26314c;                   /* active (interactable zone) background */
       --stroke: rgba(193, 199, 215, 0.35);
       --key: #10b981;
       --fk: #38bdf8;
       --danger: #ef4444;
       --accent: #38bdf8;
-      --canvas: #1e2640;
+      --canvas: #1d2740;                /* inactive background */
       --control-bg: #1f2937;
       --control-border: #94a3b8;
       --fk: #ffffff; /* arrows & markers turn white in dark theme */
@@ -61,7 +65,7 @@
   html,body{height:100%;margin:0}
 
   body{
-    font-family:"Work Sans","Work Sans Fallback",ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-family: "Work Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     color:var(--fg);
     background:var(--bg)
   }
@@ -70,6 +74,13 @@
     display:flex;align-items:baseline;gap:1rem;padding:.75rem 1rem;
     border-bottom:1px solid var(--stroke);
     background:var(--box)
+  }
+
+  /* Light theme navigation bar background */
+  @media (prefers-color-scheme: light) {
+    header {
+      background: rgb(238, 239, 246);
+    }
   }
   header h1{font-size:1.1rem;margin:0}
   #status{font-size:.9rem;color:var(--muted)}
@@ -88,39 +99,131 @@
     border:1px solid #e2e8f0;
     border-radius:8px;padding:10px;margin-bottom:10px
   }
+
+  /* Header styles for card sections */
+  .card h2 {
+    font-size: 1.15rem;
+    font-weight: 500;
+    margin: 0.8rem 0 0.5rem 0;
+    color: var(--fg);
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin: 0.6rem 0 0.4rem 0;
+    color: var(--fg);
+  }
   .row{display:flex;align-items:center;gap:.5rem}
   .row-between{display:flex;align-items:center;justify-content:space-between}
-  label{display:flex;flex-direction:column;gap:.25rem;margin:.4rem 0}
-  label.row{flex-direction:row;align-items:center;gap:.5rem}
+
+  /* FK status text styling to fix alignment */
+  #fk-status-text {
+    flex: 0 0 auto;
+    max-width: 120px;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  label{display:flex;flex-direction:column;gap:.25rem;margin:.8rem 0 .4rem 0}
+  label.row{flex-direction:row;align-items:center;gap:.5rem;margin:.3rem 0}
 
   /* Make controls use the tokens in both modes */
   input, select, button {
     padding: .5rem;
-    border: 0.5px solid var(--control-border);
+    border: 1px solid var(--control-border);
     border-radius: 6px;
     background: var(--control-bg);
     color: var(--fg);
     font: inherit;
   }
+
+  /* Input field specific styles (exclude checkboxes) */
+  input:not([type="checkbox"]) {
+    min-height: 3.75rem;
+    max-height: 8.737499999999999rem;
+    padding-left: 1rem;
+    padding-right: 2.75rem;
+    padding-top: 0.94975rem;
+    padding-bottom: 0.94975rem;
+  }
+
+  /* Select field specific styles to match inputs */
+  select {
+    min-height: 3.75rem;
+    max-height: 8.737499999999999rem;
+    padding-left: 1rem;
+    padding-right: 2.75rem;
+    padding-top: 0.94975rem;
+    padding-bottom: 0.94975rem;
+  }
+
+  input:not([type="checkbox"]):hover, select:hover {
+    border-color: #26314c;
+  }
+
+  input:not([type="checkbox"]):focus-visible, select:focus-visible {
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    box-shadow: var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000);
+    border-color: #377dff;
+  }
   input[type="checkbox"]{padding:0}
-  button{cursor:pointer;border-radius:.5rem}
+  button{cursor:pointer;border-radius:.5rem;margin-top:.5rem}
 
   /* Dark-mode specifics */
 @media (prefers-color-scheme: dark) {
-    /* 1) Sidebar “menus” (cards) should have no border in dark */
+    /* 1) Sidebar "menus" (cards) should have no border in dark */
     .card { border: none; }
 
     /* 2) Buttons should be dark with light-grey border */
-    button { background: var(--control-bg); border-color: var(--control-border); }
+    button {
+      background: rgb(45 56 85 / 0.25);
+      border-color: rgb(57 69 99);
+      color: rgb(187 193 209);
+    }
 
-    /* Optional: make the danger button less blinding in dark */
+    button:hover {
+      background: rgb(73 85 115 / 0.25);
+      color: rgb(215 218 230);
+    }
+
+    /* Update delete buttons to transparent red in dark mode */
     button.danger {
-    background: rgba(239, 68, 68, 0.12);
-    border-color: rgba(239, 68, 68, 0.45);
+    background: rgba(239, 68, 68, 0.05);
+    border-color: rgba(239, 68, 68, 0.6);
     color: var(--danger);
     }
 
-    /* 3) Inputs dark with grey default (placeholder) text */
+    /* Save buttons keep existing dark mode styles (exclude help button) */
+    button:not(.danger):not(.as-button) {
+      background: rgba(250, 90, 90, 0.7);
+      border-color: rgb(57 69 99);
+      color: rgb(187 193 209);
+    }
+
+    button:not(.danger):not(.as-button):hover {
+      background: rgb(73 85 115 / 0.25);
+      color: rgb(215 218 230);
+    }
+
+    /* 3) Inputs and selects dark with grey default (placeholder) text */
+    input:not([type="checkbox"]), select {
+      background: rgb(23 32 55);
+      color: #c1c7d7;
+      border-color: transparent;
+    }
+
+    input:not([type="checkbox"]):hover, select:hover {
+      border-color: #26314c;
+    }
+
+    input:not([type="checkbox"]):focus-visible, select:focus-visible {
+      border-color: #377dff;
+    }
+
     input::placeholder,
     textarea::placeholder {
     color: var(--muted);
@@ -128,14 +231,30 @@
     }
 }
 
-  /* Danger button colors mapped to semantic tokens (no layout change) */
-  button.danger{
-    background:#fef2f2;        /* error-bg */
-    border-color:#fecaca;      /* error-border */
-    color:var(--danger)
+  /* Danger button colors for light mode */
+  @media (prefers-color-scheme: light) {
+    button.danger{
+      background:#ffe1e1;        /* error-bg */
+      border-color:#fecaca;      /* error-border */
+      color:var(--danger)
+    }
   }
 
-  hr{border:none;border-top:1px solid #e2e8f0;margin:10px 0}
+  /* Save button styles for light mode (exclude help button) */
+  button:not(.danger):not(.as-button) {
+    background: rgba(148, 163, 184, 0.1);  /* transparent grey */
+    border-color: rgba(148, 163, 184, 0.3);
+    color: var(--fg);
+  }
+
+  hr{border:none;border-top:0.5px solid rgb(238, 239, 246);margin:10px 0}
+
+  /* Dark mode section borders */
+  @media (prefers-color-scheme: dark) {
+    hr {
+      border-top-color: #26314c;
+    }
+  }
 
   text{font-size:12px;fill:var(--fg);dominant-baseline:middle}
   .table-title{font-weight:600}
@@ -173,7 +292,7 @@
     font-weight: 600;
   }
 
-  .table-header-bg { /* fill set in SVG */ }
+  /* .table-header-bg - fill set in SVG */
 
   /* --- help button alignment --- */
 .spacer { flex: 1; }
@@ -196,7 +315,15 @@
   border-color: #e2e8f0;
 }
 @media (prefers-color-scheme: dark) {
-  .as-button.ghost { background: #2b3654; }
+  .as-button.ghost {
+    background: rgb(45 56 85 / 0.25);
+    border-color: rgb(57 69 99);
+    color: rgb(187 193 209);
+  }
+  .as-button.ghost:hover {
+    background: rgb(73 85 115 / 0.25);
+    color: rgb(215 218 230);
+  }
 }
 
 /* --- Help Modal Styles --- */
