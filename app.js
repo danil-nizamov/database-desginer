@@ -152,7 +152,7 @@
         const toTbl = schema.tables.find(tt => tt.id === outgoingFK.to.table);
         const toCol = toTbl?.columns.find(cc => cc.id === outgoingFK.to.columns[0]);
         const toLabel = toTbl && toCol ? `${toTbl.name}.${toCol.name}` : '(unknown)';
-        fkStatusText.textContent = `Foreign key → ${toLabel}`;
+        fkStatusText.textContent = `FK → ${toLabel}`;
         btnRemoveFK.hidden = false;
       } else {
         fkStatusText.textContent = '';
