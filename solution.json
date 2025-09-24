@@ -1,83 +1,73 @@
 {
-  "version": "1.0",
-  "name": "ShopDB",
+  "name": "Untitled schema",
   "tables": [
     {
-      "id": "tbl_users_web192z",
-      "name": "Table for tests",
+      "id": "tbl_users_5jfh90d",
+      "name": "users",
       "columns": [
         {
-          "id": "col_id_5w0g8x7",
+          "id": "col_id_tp7z9eh",
           "name": "id",
-          "type": "int",
-          "nullable": false,
-          "default": null
-        },
-        {
-          "id": "col_beepki_id_yw3ii99",
-          "name": "a_id",
           "type": "int",
           "nullable": false,
           "default": null
         }
       ],
       "primaryKey": [
-        "col_id_5w0g8x7"
+        "col_id_tp7z9eh"
       ],
       "uniqueConstraints": [
         {
-          "id": "uq_qc8u2w0",
+          "id": "uq_obntuki",
           "columns": [
-            "col_id_5w0g8x7"
+            "col_id_tp7z9eh"
           ]
         }
       ],
       "indexes": [],
       "position": {
-        "x": 239,
-        "y": 112
+        "x": 656,
+        "y": 133
       },
-      "color": "green"
+      "color": "white"
     },
     {
-      "id": "tbl_beepki_xcs3cmv",
-      "name": "A",
+      "id": "tbl_wow_ntv1bum",
+      "name": "peep",
       "columns": [
         {
-          "id": "col_id_ndaao69",
+          "id": "col_id_w4l8ea5",
           "name": "id",
+          "type": "int",
+          "nullable": false,
+          "default": null
+        },
+        {
+          "id": "col_user_id_v0cqfey",
+          "name": "user_id",
           "type": "int",
           "nullable": false,
           "default": null
         }
       ],
-      "primaryKey": [],
-      "uniqueConstraints": [],
+      "primaryKey": [
+        "col_id_w4l8ea5"
+      ],
+      "uniqueConstraints": [
+        {
+          "id": "uq_54xxf1u",
+          "columns": [
+            "col_id_w4l8ea5"
+          ]
+        }
+      ],
       "indexes": [],
       "position": {
-        "x": 688,
-        "y": 270
+        "x": 304,
+        "y": 223
       },
       "color": "red"
     }
   ],
-  "foreignKeys": [
-    {
-      "id": "fk_8dggxqa",
-      "from": {
-        "table": "tbl_users_web192z",
-        "columns": [
-          "col_beepki_id_yw3ii99"
-        ]
-      },
-      "to": {
-        "table": "tbl_beepki_xcs3cmv",
-        "columns": [
-          "col_id_ndaao69"
-        ]
-      },
-      "onDelete": "NO ACTION",
-      "onUpdate": "NO ACTION"
-    }
-  ]
+  "foreignKeys": []
 }

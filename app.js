@@ -446,6 +446,20 @@
     // click empty canvas to clear selection (and exit column edit mode)
     svg.addEventListener('click', () => { selectTable(null); clearFieldForm(); });
 
+    // --- Initialize Help Modal
+    (async function initHelpModal() {
+      try {
+        const helpContent = await fetch('./help-content.html').then(r => r.text());
+        HelpModal.init({
+          triggerSelector: '#btn-help',
+          content: helpContent,
+          theme: 'auto'
+        });
+      } catch (e) {
+        console.warn('Failed to load help content:', e);
+      }
+    })();
+
     // --- boot
     (async function init() {
       try {
