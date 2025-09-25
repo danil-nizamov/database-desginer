@@ -41,10 +41,9 @@
       ],
       "indexes": [],
       "position": {
-        "x": 377,
-        "y": -83
-      },
-      "color": "white"
+        "x": 603,
+        "y": 125
+      }
     },
     {
       "id": "tbl_orders",
@@ -78,10 +77,10 @@
       "uniqueConstraints": [],
       "indexes": [],
       "position": {
-        "x": 92,
-        "y": -65
+        "x": 85,
+        "y": -102
       },
-      "color": "red"
+      "color": "blue"
     }
   ],
   "foreignKeys": [
